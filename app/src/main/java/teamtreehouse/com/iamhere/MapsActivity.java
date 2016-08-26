@@ -1,5 +1,6 @@
 package teamtreehouse.com.iamhere;
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -23,13 +25,30 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
     private LocationProvider mLocationProvider;
     public int durationToast = Toast.LENGTH_SHORT;
 
+    private Marker marker = null;
+    private SharedPreferences prefs = null;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
-        mLocationProvider = new LocationProvider(this, this);
+        mLocationProvider = new LocationProvider(this, this); //Llamada a API para detectar ubicación.
+
+        prefs = this.getSharedPreferences("LatLng",MODE_PRIVATE);
+        //Check whether your preferences contains any values then we get those values
+        if((prefs.contains("Lat")) && (prefs.contains("Lng")))
+        {
+            String lat = prefs.getString("Lat","");
+            String lng = prefs.getString("Lng","");
+            LatLng l =new LatLng(Double.parseDouble(lat),Double.parseDouble(lng));
+            mMap.addMarker(new MarkerOptions().position(l));
+
+        }
+
 
     }
 
@@ -42,7 +61,11 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
 
             @Override
             public void onMapClick(LatLng point) {
-                mMap.addMarker(new MarkerOptions().position(point).draggable(true).title("Nuevo Marcador"));
+                marker = mMap.addMarker(new MarkerOptions().position(point).draggable(true).title("Nuevo Marcador"));
+
+                /* This code will save your location coordinates in SharedPrefrence when you click on the map and later you use it  */
+                prefs.edit().putString("Lat",String.valueOf(point.latitude)).commit();
+                prefs.edit().putString("Lng",String.valueOf(point.longitude)).commit();
 
             }
 
