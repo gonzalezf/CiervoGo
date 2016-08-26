@@ -4,12 +4,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+
 
 public class MapsActivity extends FragmentActivity implements LocationProvider.LocationCallback {
 
@@ -18,6 +21,7 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     private LocationProvider mLocationProvider;
+    public int durationToast = Toast.LENGTH_SHORT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
         setUpMapIfNeeded();
 
         mLocationProvider = new LocationProvider(this, this);
+
     }
 
     @Override
@@ -33,6 +38,15 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
         super.onResume();
         setUpMapIfNeeded();
         mLocationProvider.connect();
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                mMap.addMarker(new MarkerOptions().position(point).draggable(true).title("Nuevo Marcador"));
+
+            }
+
+        });
     }
 
     @Override
@@ -67,8 +81,8 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
                 setUpMap();
             }
         }
-        mMap.getUiSettings().setCompassEnabled(true); //habilitar brujula
-        mMap.getUiSettings().setZoomControlsEnabled(true);//habilitar zoom
+
+
     }
 
     /**
@@ -78,8 +92,13 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.getUiSettings().setCompassEnabled(true); //habilitar brujula
+        mMap.getUiSettings().setZoomControlsEnabled(true);//habilitar zoom
+        mMap.setMyLocationEnabled(true); //habilitar boton ubicacion actual
+        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker").draggable(true));
     }
+
+
 
     public void handleNewLocation(Location location) {
         Log.d(TAG, location.toString());
