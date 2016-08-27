@@ -1,4 +1,4 @@
-package teamtreehouse.com.iamhere;
+package felipegonzalez.com.ciervogo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

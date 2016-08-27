@@ -1,8 +1,9 @@
-package teamtreehouse.com.iamhere;
+package felipegonzalez.com.ciervogo;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -26,6 +27,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +42,12 @@ import java.util.List;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
+
+
+    private TextView info;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -56,8 +70,40 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
+
+        info = (TextView)findViewById(R.id.info);
+        loginButton = (LoginButton)findViewById(R.id.login_button);
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                info.setText(
+                        "User ID: "
+                                + loginResult.getAccessToken().getUserId()
+                                + "\n" +
+                                "Auth Token: "
+                                + loginResult.getAccessToken().getToken()
+                );
+
+            }
+
+            @Override
+            public void onCancel() {
+                info.setText("Login attempt canceled.");
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                info.setText("Login attempt canceled.");
+            }
+        });
+
         // Set up the login form.
+        /*
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -80,9 +126,19 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
+        */
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void populateAutoComplete() {

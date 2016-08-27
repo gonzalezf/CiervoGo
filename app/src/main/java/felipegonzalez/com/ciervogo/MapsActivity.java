@@ -1,4 +1,4 @@
-package teamtreehouse.com.iamhere;
+package felipegonzalez.com.ciervogo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,15 +9,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-//import com.facebook.FacebookSdk;
+import com.facebook.FacebookSdk;
 
+/*
 
+Key hash facebook: qbVxOyyMZIx6QIq4XGpeX0WxgbE=
+
+t0wOizNSFao7DtVJolehtNbtk0E= (deberia ser esta)
+ */
 
 public class MapsActivity extends FragmentActivity implements LocationProvider.LocationCallback {
 
@@ -51,8 +62,6 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
             mMap.addMarker(new MarkerOptions().position(l));
 
         }
-
-
     }
 
     @Override
