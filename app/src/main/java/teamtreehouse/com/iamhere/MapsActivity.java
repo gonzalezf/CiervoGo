@@ -1,10 +1,12 @@
 package teamtreehouse.com.iamhere;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+//import com.facebook.FacebookSdk;
 
 
 
@@ -137,4 +140,24 @@ public class MapsActivity extends FragmentActivity implements LocationProvider.L
         mMap.addMarker(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
+
+
+    public void getSearcher(View view)
+    {
+        Intent intent = new Intent(MapsActivity.this,SearchActivity.class);
+        startActivity(intent);
+    }
+
+    public void getProfile(View view)
+    {
+        Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    public void getLogin(View view)
+    {
+        Intent intent = new Intent(MapsActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 }
