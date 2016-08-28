@@ -6,6 +6,7 @@
     <string name="setRange">Botones</string>
     <string name="cazar">Cazar</string>
     <string name="perfil">Perfil</string>
+    <string name="login">Login</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_login">Sign in</string>
 
